@@ -1,0 +1,1 @@
+insert into users (first_name, last_name, user_password) values ('Andrey', 'Bobrovskii', 'password')
