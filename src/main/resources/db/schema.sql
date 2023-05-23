@@ -25,6 +25,6 @@ create table tasks (
 /* table for storing task's tags list, so task_id and tag_id are not null */
 create table tasks_tags (
     id BIGSERIAL primary key,
-    task_id BIGINT references tasks(id) NOT NULL,
-    tag_id BIGINT references tags(id) NOT NULL
+    task_id BIGINT references tasks(id) ON DELETE CASCADE NOT NULL,
+    tag_id BIGINT references tags(id) ON DELETE CASCADE NOT NULL
 );
