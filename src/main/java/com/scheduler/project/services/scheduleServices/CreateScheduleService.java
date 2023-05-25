@@ -51,6 +51,20 @@ public class CreateScheduleService {
         return result;
     }
 
+    private boolean oneIsNull(String start_time, String end_time) {
+        return (start_time == null && end_time != null) || (start_time != null && end_time == null);
+    }
+
+    private Long calcTimeValue(String time_string, String attribute_name) throws CreateScheduleServiceException {
+        Long result;
+        try {result = TimeConverter.getTimeLongValue(time_string);}
+        catch (DateTimeParseException e) {
+            throw new CreateScheduleServiceException("invalid value for " +  attribute_name + " attribute - " +
+                    time_string + ", user pattern - '" + TimeConverter.timeFormat + "'");
+        }
+        return result;
+    }
+
     public ResponseScheduleDTO createSchedule(ScheduleDTO scheduleDTO) throws CreateScheduleServiceException {
         Long user_id = scheduleDTO.getUser_id();
         Optional<UserEntity> userOptional = userRepo.findById(user_id);
@@ -59,23 +73,19 @@ public class CreateScheduleService {
             throw new CreateScheduleServiceException("no user with id=" + user_id + " found");
         }
         UserEntity user = userOptional.get();
-
         String start_time_string = scheduleDTO.getStart_time();
         String end_time_string = scheduleDTO.getEnd_time();
 
         Long start_time;
         Long end_time;
 
-        try {start_time = TimeConverter.getTimeLongValue(start_time_string);}
-        catch (DateTimeParseException e) {
-            throw new CreateScheduleServiceException("invalid value for start_time attribute - " +
-                    start_time_string + ", user pattern - '" + TimeConverter.timeFormat + "'");
+        // check and calc time interval:
+        if (oneIsNull(start_time_string, end_time_string)) {
+            throw new CreateScheduleServiceException("start_time and end_time BOTH should contain ore should not contain a value");
         }
-        try {end_time = TimeConverter.getTimeLongValue(scheduleDTO.getEnd_time());}
-        catch (DateTimeParseException e) {
-            throw new CreateScheduleServiceException("invalid value for end_time attribute - " +
-                    start_time_string + ", user pattern - '" + TimeConverter.timeFormat + "'");
-        }
+        start_time = calcTimeValue(start_time_string, "start_time");
+        end_time = calcTimeValue(end_time_string, "end_time");
+
         if (start_time != null && end_time != null && start_time > end_time) {
             throw new CreateScheduleServiceException("start_time (" + start_time_string + ") should be less than end_time (" +
                     end_time_string + ")");

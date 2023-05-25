@@ -22,7 +22,7 @@ public class TaskEditDTO {
     @Nullable
     private String description;
 
-    @NotNull
+    @NotNull(message = "task id should be not null")
     private Long task_id;
 
     @Nullable
