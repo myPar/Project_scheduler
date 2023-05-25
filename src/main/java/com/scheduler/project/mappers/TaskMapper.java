@@ -1,12 +1,9 @@
 package com.scheduler.project.mappers;
 
 import com.scheduler.project.DTO.TaskEditDTO;
-import com.scheduler.project.DTO.TaskMainDTO;
 import com.scheduler.project.entities.TaskEntity;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-
-import java.time.format.DateTimeParseException;
 
 @Mapper
 public interface TaskMapper {
@@ -19,5 +16,4 @@ public interface TaskMapper {
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "completed", ignore = true)
     void updateTaskFromDTO(TaskEditDTO taskEditDTO, @MappingTarget TaskEntity task);
-
 }

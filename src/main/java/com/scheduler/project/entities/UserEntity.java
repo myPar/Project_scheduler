@@ -23,4 +23,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user")
     private List<TaskEntity> tasks;
+
+    @OneToMany(mappedBy = "user")
+    private List<ScheduleEntity> schedules;
 }

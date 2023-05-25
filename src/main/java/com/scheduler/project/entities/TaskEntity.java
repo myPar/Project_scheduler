@@ -33,7 +33,8 @@ public class TaskEntity {
 
     private Long start_time;
 
-    private Boolean completed;
+    @Builder.Default
+    private Boolean completed = false;
 
     private Long duration;
 }

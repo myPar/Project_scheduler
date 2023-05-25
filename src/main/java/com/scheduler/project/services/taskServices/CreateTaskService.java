@@ -3,7 +3,6 @@ package com.scheduler.project.services.taskServices;
 import com.scheduler.project.DTO.TaskMainDTO;
 import com.scheduler.project.entities.TaskEntity;
 import com.scheduler.project.entities.UserEntity;
-import com.scheduler.project.mappers.TaskMapper;
 import com.scheduler.project.repos.TaskRepo;
 import com.scheduler.project.repos.UserRepo;
 import lombok.NoArgsConstructor;
