@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
@@ -65,6 +66,25 @@ public class CreateScheduleService {
         return result;
     }
 
+    private void checkScheduleItemsDuplicates(List<ScheduleItemDTO> scheduleItems) throws CreateScheduleServiceException {
+        Integer emptyValue = -1;
+        Integer notEmptyValue = 1;
+
+        Integer[] checkDifficultArray = new Integer[ScheduleItemDTO.maxDifficult + 1];
+        Arrays.fill(checkDifficultArray, emptyValue);
+
+        for (ScheduleItemDTO itemDTO: scheduleItems) {
+            Integer difficult = itemDTO.getDifficult();
+
+            if (checkDifficultArray[difficult] == emptyValue) {
+                checkDifficultArray[difficult] = notEmptyValue;
+            }
+            else {
+                throw new CreateScheduleServiceException("duplicate schedule item with difficult=" + difficult);
+            }
+        }
+    }
+
     public ResponseScheduleDTO createSchedule(ScheduleDTO scheduleDTO) throws CreateScheduleServiceException {
         Long user_id = scheduleDTO.getUser_id();
         Optional<UserEntity> userOptional = userRepo.findById(user_id);
@@ -90,7 +110,9 @@ public class CreateScheduleService {
             throw new CreateScheduleServiceException("start_time (" + start_time_string + ") should be less than end_time (" +
                     end_time_string + ")");
         }
+        // check duplicates in schedule items
         List<ScheduleItemDTO> scheduleItemDTOList = scheduleDTO.getScheduleItems();
+        checkScheduleItemsDuplicates(scheduleItemDTOList);
 
         // build and save schedule entity
         ScheduleEntity scheduleEntity = ScheduleEntity.builder().user(user)
