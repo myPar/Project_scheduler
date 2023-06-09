@@ -13,7 +13,7 @@ public class TimeConverter {
             return null;
         }
         LocalDateTime time = LocalDateTime.parse(time_string, formatter);
-        ZonedDateTime zdt = ZonedDateTime.of(time, ZoneId.systemDefault());
+        ZonedDateTime zdt = ZonedDateTime.of(time, ZoneId.systemDefault()); // TODO change on selected time zone (system default can be another timezone)
 
         return zdt.toInstant().toEpochMilli();
     }
@@ -23,8 +23,16 @@ public class TimeConverter {
             return null;
         }
         Instant timeInstant = Instant.ofEpochMilli(timeValue);
-        LocalDateTime dateTimeInstant = LocalDateTime.ofInstant(timeInstant, ZoneId.systemDefault());
+        LocalDateTime dateTimeInstant = LocalDateTime.ofInstant(timeInstant, ZoneId.systemDefault());   // TODO change on selected time zone (system default can be another timezone)
 
         return dateTimeInstant.format(formatter);
     }
+
+    public static Long stringTimeToLong(String time_string, Long default_value) {
+        if (time_string == null) {
+            return default_value;
+        }
+        return TimeConverter.getTimeLongValue(time_string);
+    }
+
 }

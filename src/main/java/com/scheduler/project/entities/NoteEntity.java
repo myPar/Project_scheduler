@@ -1,6 +1,8 @@
 package com.scheduler.project.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,17 +13,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "tasks_tags")
-public class TasksTagsEntity {
+@Table(name="notes")
+public class NoteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "tag_id")
-    private TagEntity tag;
+    @JoinColumn(name="user_id")
+    private UserEntity user;
 
-    @ManyToOne
-    @JoinColumn(name = "task_id")
-    private TaskEntity task;
+    @NotBlank
+    private String note_text;
+
+    @NotBlank
+    private String note_name;
+
+    @NotNull
+    private Long creation_time;
 }

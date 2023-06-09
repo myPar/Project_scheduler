@@ -18,8 +18,10 @@ public interface ScheduleMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
     @Mapping(target = "scheduleItems", ignore = true)
     @Mapping(target = "user_id", expression = "java(scheduleEntity.getUser().getId())")
-    @Mapping(target = "start_time", expression = "java(com.scheduler.project.tools.TimeConverter.getTimeStringValue(scheduleEntity.getStart_time()))")
-    @Mapping(target = "end_time", expression = "java(com.scheduler.project.tools.TimeConverter.getTimeStringValue(scheduleEntity.getEnd_time()))")
+    @Mapping(target = "start_time", expression =
+            "java(com.scheduler.project.tools.TimeConverter.getTimeStringValue(scheduleEntity.getStart_time()))")
+    @Mapping(target = "end_time", expression =
+            "java(com.scheduler.project.tools.TimeConverter.getTimeStringValue(scheduleEntity.getEnd_time()))")
     ResponseScheduleDTO getResponseScheduleDTO(ScheduleEntity scheduleEntity) throws DateTimeException;
 
     ScheduleItemDTO getScheduleItemDTO(ScheduleItemEntity scheduleItemEntity);
@@ -29,8 +31,10 @@ public interface ScheduleMapper {
     void updateScheduleItemFromDTO(ScheduleItemDTO scheduleItemDTO, @MappingTarget ScheduleItemEntity scheduleItemEntity);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "start_time", expression = "java(com.scheduler.project.tools.TimeConverter.getTimeLongValue(scheduleDTO.getStart_time()))")
-    @Mapping(target = "end_time", expression = "java(com.scheduler.project.tools.TimeConverter.getTimeLongValue(scheduleDTO.getEnd_time()))")
+    @Mapping(target = "start_time", expression =
+            "java(com.scheduler.project.tools.TimeConverter.stringTimeToLong(scheduleDTO.getStart_time(), scheduleEntity.getStart_time()))")
+    @Mapping(target = "end_time", expression =
+            "java(com.scheduler.project.tools.TimeConverter.stringTimeToLong(scheduleDTO.getEnd_time(), scheduleEntity.getEnd_time()))")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "scheduleItems", ignore = true)
     @Mapping(target = "user", ignore = true)

@@ -1,6 +1,7 @@
 package com.scheduler.project.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,17 +12,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "tasks_tags")
-public class TasksTagsEntity {
+@Table(name="completed_task_data")
+public class CompletedTaskDataEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "tag_id")
-    private TagEntity tag;
+    @JoinColumn(name="user_id")
+    private UserEntity user;
 
-    @ManyToOne
-    @JoinColumn(name = "task_id")
-    private TaskEntity task;
+    private Long completion_time;
+
+    private Long duration;
+    private Integer difficult;
+
+    @Builder.Default
+    private Boolean schedule_completion = false;
 }

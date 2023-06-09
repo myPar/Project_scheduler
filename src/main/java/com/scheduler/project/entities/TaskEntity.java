@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Entity
 @Data
@@ -36,5 +37,15 @@ public class TaskEntity {
     @Builder.Default
     private Boolean completed = false;
 
-    private Long duration;
+    @Builder.Default
+    private Boolean overdue = false;
+
+    private Long duration;  // in minutes
+
+    public boolean checkOverdue() {
+        if (start_time == null || duration == null) {return false;}
+        long end_time = start_time + TimeUnit.MINUTES.toMillis(duration);
+
+        return !completed && end_time < System.currentTimeMillis();
+    }
 }

@@ -18,3 +18,14 @@ INSERT INTO tasks_tags(task_id, tag_id) VALUES (4, 1);
 INSERT INTO tasks_tags(task_id, tag_id) VALUES (4, 3);
 INSERT INTO tasks_tags(task_id, tag_id) VALUES (5, 2);
 INSERT INTO tasks_tags(task_id, tag_id) VALUES (6, 2);
+
+INSERT INTO schedules(user_id, start_time, end_time, schedule_name) VALUES (1, 100000, 120000, 'finish project');
+
+INSERT INTO schedule_items(schedule_id, difficult, count_to_complete) VALUES (1, 2, 2);
+INSERT INTO schedule_items(schedule_id, difficult, count_to_complete) VALUES (1, 1, 3);
+INSERT INTO schedule_items(schedule_id, difficult, count_to_complete) VALUES (1, 3, 1);
+
+INSERT INTO notes(user_id, note_name, note_text, creation_time) VALUES (1, 'first note', 'this is my first note and I have no idea what to write here..', 100000);
+INSERT INTO notes_tags(note_id, tag_id) VALUES (1, 1);
+INSERT INTO notes_tags(note_id, tag_id) VALUES (1, 2);
+INSERT INTO notes_tags(note_id, tag_id) VALUES (1, 3);

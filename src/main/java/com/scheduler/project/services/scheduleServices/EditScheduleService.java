@@ -105,5 +105,13 @@ public class EditScheduleService {
             throw new EditScheduleServiceException("schedule name should contains characters");
         }
         editAndSaveScheduleItems(editScheduleDTO.getScheduleItems(), editingScheduleEntity);
+
+        if (editingScheduleEntity.checkOverdue()) {
+            editingScheduleEntity.setOverdue(true);
+        }
+        else if (editingScheduleEntity.getOverdue()) {
+            editingScheduleEntity.setOverdue(false);    // set overdue back to false if now is not overdue
+        }
+        scheduleRepo.save(editingScheduleEntity);
     }
 }
