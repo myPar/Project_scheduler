@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -22,6 +24,9 @@ public class NoteEntity {
     @ManyToOne
     @JoinColumn(name="user_id")
     private UserEntity user;
+
+    @OneToMany(mappedBy="note")
+    private List<NotesTagsEntity> tags;
 
     @NotBlank
     private String note_text;

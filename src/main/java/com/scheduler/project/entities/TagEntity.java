@@ -25,4 +25,7 @@ public class TagEntity {
 
     @OneToMany(mappedBy = "tag")
     private List<TasksTagsEntity> tasks;
+
+    @OneToMany(mappedBy = "tag")
+    private List<NotesTagsEntity> notes;
 }

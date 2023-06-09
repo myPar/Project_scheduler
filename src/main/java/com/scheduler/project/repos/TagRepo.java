@@ -2,6 +2,7 @@ package com.scheduler.project.repos;
 
 import com.scheduler.project.entities.TagEntity;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -9,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 
-public interface TagRepo extends CrudRepository<TagEntity, Long> {
+public interface TagRepo extends JpaRepository<TagEntity, Long> {
 
     @Modifying
     @Transactional

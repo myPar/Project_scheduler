@@ -3,6 +3,7 @@ package com.scheduler.project.mappers;
 import com.scheduler.project.DTO.EditScheduleDTO;
 import com.scheduler.project.DTO.ResponseScheduleDTO;
 import com.scheduler.project.DTO.ScheduleItemDTO;
+import com.scheduler.project.DTO.ScheduleSelectDTO;
 import com.scheduler.project.entities.ScheduleEntity;
 import com.scheduler.project.entities.ScheduleItemEntity;
 import org.mapstruct.*;
@@ -10,6 +11,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.time.DateTimeException;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 @Mapper
 public interface ScheduleMapper {
@@ -41,4 +43,13 @@ public interface ScheduleMapper {
     @Mapping(target = "completed", ignore = true)
     @Mapping(target = "overdue", ignore = true)
     void updateScheduleFromDTO(EditScheduleDTO scheduleDTO, @MappingTarget ScheduleEntity scheduleEntity) throws DateTimeParseException;
+
+    List<ScheduleSelectDTO> getSchedulesSelectDTOFromEntities(List<ScheduleEntity> scheduleEntities);
+
+    @Mapping(target = "user_id", expression = "java(scheduleEntity.getUser().getId())")
+    @Mapping(target = "scheduleItems", source = "scheduleItems", qualifiedByName = "extractItemsDTOs")
+    ScheduleSelectDTO getScheduleSelectDTOFromEntity(ScheduleEntity scheduleEntity);
+
+    @Named(value = "extractItemsDTOs")
+    List<ScheduleItemDTO> extractItemsDTOs(List<ScheduleItemEntity> itemEntities);
 }

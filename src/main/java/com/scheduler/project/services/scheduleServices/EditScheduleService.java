@@ -13,6 +13,7 @@ import com.scheduler.project.DTO.EditScheduleDTO;
 import org.springframework.stereotype.Service;
 
 import java.time.DateTimeException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,25 @@ public class EditScheduleService {
         if (bothAreNotNull(start_time, end_time)) {
             if (end_time < start_time) {                // TODO maybe add getting string values of time interval from entity
                 throw new EditScheduleServiceException("start_time should be less than end_time");
+            }
+        }
+    }
+
+    private void checkScheduleItemsDuplicates(List<ScheduleItemDTO> scheduleItems) throws EditScheduleServiceException {
+        Integer emptyValue = -1;
+        Integer notEmptyValue = 1;
+
+        Integer[] checkDifficultArray = new Integer[ScheduleItemDTO.maxDifficult + 1];
+        Arrays.fill(checkDifficultArray, emptyValue);
+
+        for (ScheduleItemDTO itemDTO: scheduleItems) {
+            Integer difficult = itemDTO.getDifficult();
+
+            if (checkDifficultArray[difficult] == emptyValue) {
+                checkDifficultArray[difficult] = notEmptyValue;
+            }
+            else {
+                throw new EditScheduleServiceException("duplicate schedule item with difficult=" + difficult);
             }
         }
     }
@@ -104,6 +124,7 @@ public class EditScheduleService {
         if (editingScheduleEntity.getSchedule_name().isBlank()) {
             throw new EditScheduleServiceException("schedule name should contains characters");
         }
+        checkScheduleItemsDuplicates(editScheduleDTO.getScheduleItems());
         editAndSaveScheduleItems(editScheduleDTO.getScheduleItems(), editingScheduleEntity);
 
         if (editingScheduleEntity.checkOverdue()) {

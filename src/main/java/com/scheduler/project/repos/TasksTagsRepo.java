@@ -2,14 +2,14 @@ package com.scheduler.project.repos;
 
 import com.scheduler.project.entities.TasksTagsEntity;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 
-public interface TasksTagsRepo extends CrudRepository<TasksTagsEntity, Long> {
+public interface TasksTagsRepo extends JpaRepository<TasksTagsEntity, Long> {
     @Transactional
     @Modifying
     @Query(value="INSERT INTO tasks_tags (task_id, tag_id) VALUES(:task_id, :tag_id)", nativeQuery = true)
