@@ -39,7 +39,7 @@ public class TaskEntity {
 
     private Long duration;  // in minutes
 
-    public boolean checkOverdue() {
+    public boolean isOverdue() {
         if (start_time == null || duration == null) {return false;}
         long end_time = start_time + TimeUnit.MINUTES.toMillis(duration);
 

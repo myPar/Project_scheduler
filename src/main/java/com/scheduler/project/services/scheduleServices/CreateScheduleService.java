@@ -10,7 +10,7 @@ import com.scheduler.project.entities.UserEntity;
 import com.scheduler.project.repos.ScheduleItemRepo;
 import com.scheduler.project.repos.ScheduleRepo;
 import com.scheduler.project.repos.UserRepo;
-import com.scheduler.project.tools.TimeConverter;
+import com.scheduler.project.tools.Time.TimeConverter;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

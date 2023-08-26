@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,21 +38,23 @@ public class SelectScheduleService {
         return ScheduleMapper.INSTANCE.getScheduleSelectDTOFromEntity(scheduleEntity);
     }
 
-    private List<ScheduleEntity> getSchedulesByIds(List<Long> ids) {
-        List<ScheduleEntity> result = new ArrayList<>();
-
-        for (Long id: ids) {
-            result.add(scheduleRepo.selectScheduleById(id));
+    // set overdue field to entity and save it to repo
+    private void setAndSaveOverdueSchedules(List<ScheduleEntity> selectedEntities) {
+        for (ScheduleEntity entity: selectedEntities) {
+            if (entity.isOverdue()) {
+                entity.setOverdue(true);
+                scheduleRepo.save(entity);
+            }
         }
-        return result;
     }
 
     public List<ScheduleSelectDTO> selectUserSchedules(Long userId) throws SelectScheduleServiceException {
         if (userRepo.findById(userId).isEmpty()) {
             throw new SelectScheduleServiceException("no user with id=" + userId);
         }
-        List<Long> selectedSchedules = scheduleRepo.selectUserSchedulesIds(userId);
+        List<ScheduleEntity> selectedSchedules = scheduleRepo.selectUserSchedules(userId);
+        setAndSaveOverdueSchedules(selectedSchedules);
 
-        return ScheduleMapper.INSTANCE.getSchedulesSelectDTOFromEntities(getSchedulesByIds(selectedSchedules));
+        return ScheduleMapper.INSTANCE.getSchedulesSelectDTOFromEntities(selectedSchedules);
     }
 }

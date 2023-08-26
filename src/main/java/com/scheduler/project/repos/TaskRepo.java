@@ -17,10 +17,9 @@ public interface TaskRepo extends JpaRepository<TaskEntity, Long> {
     @Query(value = "delete from tasks t where t.id=:id", nativeQuery = true)
     void deleteTask(@Param("id") Long id);
 
-
-    @Query(value="select id from tasks where tasks.user_id= :userId",
+    @Query(value="select * from tasks where tasks.user_id= :userId",
             nativeQuery = true)
-    List<Long> selectUserTasksIds(@RequestParam(name = "userId") Long userId);
+    List<TaskEntity> selectUserTasks(@RequestParam(name = "userId") Long userId);
 
     @Query(value="select * from tasks left outer join \n" +
             "(select task_id, tag_name from tasks_tags inner join (select * from tags) tt \n" +

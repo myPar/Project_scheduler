@@ -39,7 +39,7 @@ public class ScheduleEntity {
     @OneToMany(mappedBy = "schedule")
     private List<ScheduleItemEntity> scheduleItems;
 
-    public boolean checkOverdue() {
+    public boolean isOverdue() {
         if (end_time == null) {return false;}
 
         return !completed && end_time < System.currentTimeMillis();

@@ -11,6 +11,7 @@ import com.scheduler.project.services.scheduleServices.SelectMostDifficultSchedu
 import com.scheduler.project.services.scheduleServices.SelectScheduleService.SelectScheduleServiceException;
 import com.scheduler.project.services.scheduleServices.GetSchedulesCompletionDataService.GetSchedulesCompletionDataServiceException;
 import com.scheduler.project.services.scheduleServices.GetSchedulesWhichCanBeCompletedService.GetSchedulesCompletedServiceException;
+import com.scheduler.project.services.scheduleServices.DeleteScheduleService.DeleteScheduleServiceException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +29,20 @@ public class ScheduleController {
     private final SelectMostDifficultScheduleService selectMostDifficultScheduleService;
     private final GetSchedulesCompletionDataService getSchedulesCompletionDataService;
     private final GetSchedulesWhichCanBeCompletedService getSchedulesWhichCanBeCompletedService;
+    private final DeleteScheduleService deleteScheduleService;
 
     @Autowired
     public ScheduleController(CreateScheduleService createScheduleService, EditScheduleService editSCheduleService,
                               SelectScheduleService selectScheduleService, SelectMostDifficultScheduleService selectMostDifficultScheduleService,
-                              GetSchedulesCompletionDataService getSchedulesCompletionDataService, GetSchedulesWhichCanBeCompletedService getSchedulesWhichCanBeCompletedService) {
+                              GetSchedulesCompletionDataService getSchedulesCompletionDataService, GetSchedulesWhichCanBeCompletedService getSchedulesWhichCanBeCompletedService,
+                              DeleteScheduleService deleteScheduleService) {
         this.createScheduleService = createScheduleService;
         this.editSCheduleService = editSCheduleService;
         this.selectScheduleService = selectScheduleService;
         this.selectMostDifficultScheduleService = selectMostDifficultScheduleService;
         this.getSchedulesCompletionDataService = getSchedulesCompletionDataService;
         this.getSchedulesWhichCanBeCompletedService = getSchedulesWhichCanBeCompletedService;
+        this.deleteScheduleService = deleteScheduleService;
     }
 
     @PostMapping("/create")
@@ -115,6 +119,16 @@ public class ScheduleController {
             return ResponseEntity.ok().body(result);
         }
         catch (GetSchedulesCompletedServiceException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @DeleteMapping("/removeSchedule")
+    public ResponseEntity<?> removeSchedule(@RequestParam(name = "schedule_id") @NotNull Long scheduleId) {
+        try {
+            deleteScheduleService.deleteSchedule(scheduleId);
+            return ResponseEntity.ok().body("schedule with id=" + scheduleId + " was successfully deleted");
+        }
+        catch (DeleteScheduleServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

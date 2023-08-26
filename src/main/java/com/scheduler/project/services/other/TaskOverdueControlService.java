@@ -18,7 +18,7 @@ public class TaskOverdueControlService {
     public Collection<TaskEntity> overdueUpdate(Collection<TaskEntity> taskEntities) {
         for (TaskEntity taskEntity: taskEntities) {
 
-            if (taskEntity.checkOverdue()) {
+            if (taskEntity.isOverdue()) {
                 taskEntity.setOverdue(true);
                 taskRepo.save(taskEntity);
             }

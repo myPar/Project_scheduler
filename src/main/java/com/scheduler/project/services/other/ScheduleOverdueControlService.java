@@ -16,7 +16,7 @@ public class ScheduleOverdueControlService {
     }
     public Collection<ScheduleEntity> overdueUpdate(Collection<ScheduleEntity> scheduleEntities) {
         for (ScheduleEntity scheduleEntity: scheduleEntities) {
-            if (scheduleEntity.checkOverdue()) {
+            if (scheduleEntity.isOverdue()) {
                 scheduleEntity.setOverdue(true);
                 scheduleRepo.save(scheduleEntity);
             }

@@ -1,4 +1,4 @@
-package com.scheduler.project.tools;
+package com.scheduler.project.tools.Time;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;

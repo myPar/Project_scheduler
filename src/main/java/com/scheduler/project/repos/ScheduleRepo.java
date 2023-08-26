@@ -26,8 +26,8 @@ public interface ScheduleRepo extends JpaRepository<ScheduleEntity, Long> {
             "where schedules.id = :sc_id_param", nativeQuery = true)
     ScheduleEntity selectScheduleById(@Param(value = "sc_id_param") Long scheduleId);
 
-    @Query(value = "select id from schedules where schedules.user_id = :userId", nativeQuery = true)
-    List<Long> selectUserSchedulesIds(@Param(value = "userId") Long userId);
+    @Query(value = "select * from schedules where schedules.user_id = :userId", nativeQuery = true)
+    List<ScheduleEntity> selectUserSchedules(@Param(value = "userId") Long userId);
 
     @Query(value = "with schedules_completion_data as\n" +
             "\n" +

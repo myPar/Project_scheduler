@@ -30,13 +30,13 @@ public class SelectTasksService {
         }
     }
 
-    private List<TaskEntity> getTasksByIds(List<Long> ids) {
-        List<TaskEntity> result = new ArrayList<>();
-
-        for (Long id: ids) {
-            result.add(taskRepo.selectTaskById(id).get());
+    private void setAndSaveOverdueTasks(List<TaskEntity> selectedEntities) {
+        for (TaskEntity entity: selectedEntities) {
+            if (entity.isOverdue()) {
+                entity.setOverdue(true);
+                taskRepo.save(entity);
+            }
         }
-        return result;
     }
 
     public List<TaskSelectDTO> selectAllUserTasks(Long userId) throws SelectTaskServiceException {
@@ -44,9 +44,10 @@ public class SelectTasksService {
         if (userOptional.isEmpty()) {
             throw new SelectTaskServiceException("no user with id=" + userId);
         }
-        List<Long> selectedTasksIds = taskRepo.selectUserTasksIds(userId);
+        List<TaskEntity> selectedTasks = taskRepo.selectUserTasks(userId);
+        setAndSaveOverdueTasks(selectedTasks);
 
-        return TaskMapper.INSTANCE.getTasksSelectDTOFromTaskEntities(getTasksByIds(selectedTasksIds));
+        return TaskMapper.INSTANCE.getTasksSelectDTOFromTaskEntities(selectedTasks);
     }
 
     public TaskSelectDTO selectTaskById(Long taskId) throws SelectTaskServiceException {
@@ -57,6 +58,10 @@ public class SelectTasksService {
         }
         TaskEntity selectedTask = taskOptional.get();
 
+        if (selectedTask.isOverdue()) {
+            selectedTask.setOverdue(true);
+            taskRepo.save(selectedTask);
+        }
         return TaskMapper.INSTANCE.getTaskSelectDTOFromEntity(selectedTask);
     }
 }

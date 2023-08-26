@@ -6,7 +6,7 @@ import com.scheduler.project.entities.ScheduleItemEntity;
 import com.scheduler.project.mappers.ScheduleMapper;
 import com.scheduler.project.repos.ScheduleItemRepo;
 import com.scheduler.project.repos.ScheduleRepo;
-import com.scheduler.project.tools.TimeConverter;
+import com.scheduler.project.tools.Time.TimeConverter;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.scheduler.project.DTO.EditScheduleDTO;
@@ -53,8 +53,8 @@ public class EditScheduleService {
     }
 
     private void checkScheduleItemsDuplicates(List<ScheduleItemDTO> scheduleItems) throws EditScheduleServiceException {
-        Integer emptyValue = -1;
-        Integer notEmptyValue = 1;
+        int emptyValue = -1;
+        int notEmptyValue = 1;
 
         Integer[] checkDifficultArray = new Integer[ScheduleItemDTO.maxDifficult + 1];
         Arrays.fill(checkDifficultArray, emptyValue);
@@ -127,7 +127,7 @@ public class EditScheduleService {
         checkScheduleItemsDuplicates(editScheduleDTO.getScheduleItems());
         editAndSaveScheduleItems(editScheduleDTO.getScheduleItems(), editingScheduleEntity);
 
-        if (editingScheduleEntity.checkOverdue()) {
+        if (editingScheduleEntity.isOverdue()) {
             editingScheduleEntity.setOverdue(true);
         }
         else if (editingScheduleEntity.getOverdue()) {

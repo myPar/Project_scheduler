@@ -22,6 +22,7 @@ public class TaskController {
     private final AddTagToTaskService addTagToTaskService;
     private final CompleteTaskService completeTaskService;
     private final SelectTasksService selectTasksService;
+
     @Autowired
     public TaskController(CreateTaskService createTaskService, EditTaskService editTaskService,
                           DeleteTaskService deleteTaskService, AddTagToTaskService addTagToTaskService,
@@ -55,8 +56,8 @@ public class TaskController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @GetMapping("/remove")
-    public ResponseEntity<?> deleteTask(@RequestParam @NotNull Long id) {
+    @DeleteMapping("/remove")
+    public ResponseEntity<?> deleteTask(@RequestParam(name = "task_id") @NotNull Long id) {
         try {
             deleteTaskService.deleteTask(id);
             return ResponseEntity.ok("task with id=" + id + " successfully deleted");

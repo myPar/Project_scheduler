@@ -40,7 +40,7 @@ public class EditTaskService {
             throw new EditTaskServiceException("invalid start time string - " +
                     taskEditDTO.getStart_time() + ", use pattern - 'yyyy-MM-dd HH:mm'");
         }
-        if (editingTask.checkOverdue()) {
+        if (editingTask.isOverdue()) {
             editingTask.setOverdue(true);
         }
         else if (editingTask.getOverdue()) {
